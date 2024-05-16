@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veuz Concepts</title>
+    <script src="https://kit.fontawesome.com/848f8b6cbf.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./styles/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+</head>
+
+<body>
+
+
+    <div class="nav-bar">
+        <div class="nav-left">
+            <ul>
+                <li><i class="fa-solid fa-arrow-left-long"></i></li>
+                <li>
+                    <p>Configuration</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nav-right">
+            <ul>
+                <li><i class="fa-solid fa-gear fa-icons"></i></li>
+                <li><i class="fa-regular fa-bell fa-icons"></i></i></li>
+                <li><i class="fa-regular fa-user fa-icons"></i></i></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="main">
+            <div class="preview-area" id="previewArea">
+                <div class="preview-page" id="previewPage">
+                    <div class="drag rotate-0" id="qrImage" onclick="openDesignTools('qrImage')">
+                        <img src="./images/QR_code.png" class="img-format profile-input"
+                            onclick="openDesignTools('qrPhoto')" id="qrPhoto" width="120" height="100" alt="">
+                    </div>
+                    <div class="drag rotate-0 profile-input txt-format" id="profileName"
+                        onclick="openDesignTools('profileName')">
+                        Name
+                    </div>
+                    <div class="drag rotate-0 profile-input txt-format" id="company"
+                        onclick="openDesignTools('company')">Company
+                    </div>
+                    <div class="drag rotate-0 profile-input txt-format" id="designation"
+                        onclick="openDesignTools('designation')">
+                        Designation
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="toolbar-area">
+                <div class="toolbar-heading" id="toolbarHeading">
+                    <p class="sub-heading">DESIGN TOOLS</p>
+                    <button>Preview</button>
+                </div>
+                <div class="toolbar-body">
+                    <div>
+                        <p class="sub-heading">Mode</p>
+                        <div class="select-mode">
+                            <div class="choose-mode">
+                                <button id="landscapeBtn" class="mode-btn">Landscape
+                                </button>
+                            </div>
+                            <div class="choose-mode">
+                                <button id="portraitBtn" class="mode-btn">Portrait
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div>
+                        <p class="sub-heading">Select Page Type</p>
+                        <select class="page-type" id="pageType" name="pageType" onchange="changePageSize()">
+                            <option value="A4">A4(210mm × 297mm)</option>
+                            <option value="A5" selected>A5(148mm × 210mm)</option>
+                            <option value="A6">A6(105mm × 148mm)</option>
+                            <option value="Custom">Custom (minvalue: 78mm × 86mm)</option>
+                        </select>
+                    </div>
+
+                    <!-- CudtomPageSize Slider -->
+                    <div class="range-slider" id="page-type-slider">
+                        <div class="slider">
+                            <label for="widthRange">Width</label>
+                            <input type="range" id="widthRange" min="78" max="500" value="0" class="slider2"
+                                onchange="changePageSize()" oninput="updateTooltip(this)">
+                            <span class="tooltip" id="widthTooltip">78px</span>
+                        </div>
+
+                        <div class="slider">
+                            <label for="heightRange">Height</label>
+                            <input type="range" id="heightRange" min="86" max="500" value="0"
+                                onchange="changePageSize()" oninput="updateTooltip(this)">
+                            <span class="tooltip" id="heightTooltip">86px</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="range-slider" id="qrSizeSlider">
+                        <div class="slider">
+                            <label for="widthRange">QR Width</label>
+                            <input type="range" id="qrWidthSlider" min="120" max="500" value="0" class="slider2"
+                                oninput="updateTooltiptxt(this)">
+                            <span class="tooltip" id="widthTooltip">120px</span>
+                        </div>
+
+                        <div class="slider">
+                            <label for="heightRange">QR Height</label>
+                            <input type="range" id="qrHeightSlider" min="100" max="500" value="0"
+                                oninput="updateTooltiptxt(this)">
+                            <span class="tooltip" id="heightTooltip">100px</span>
+                        </div>
+                    </div>
+
+
+
+                    <!-- Design tools Start -->
+                    <div class="design-tools" id="designTools">
+                        <div class="range-slider">
+                            <div class="slider">
+                                <label for="fontSizeSlider">Font Size</label>
+                                <input id="fontSizeSlider" type="range" min="16" max="100" value="16"
+                                    oninput="updateTooltiptxt(this)">
+                                <span class="tooltip" id="fontsizeTooltip">16px</span>
+                            </div>
+                            <div class="slider">
+                                <label for="lineHeightSlider">Line Height</label>
+                                <input id="lineHeightSlider" type="range" min="20" max="100" value="20"
+                                    oninput="updateTooltiptxt(this)">
+                                <span class="tooltip" id="lineheightTooltip">20px</span>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div>
+                            <p class="sub-heading">Text Align</p>
+                            <div class="select-radio">
+                                <label>Left<input type="radio" name="position" value="left"
+                                        onclick="changeTextAlign('left')">
+                                </label>
+                                <label>Centre<input type="radio" name="position" value="center"
+                                        onclick="changeTextAlign('center')">
+                                </label>
+                                <label>Right<input type="radio" name="position" value="right"
+                                        onclick="changeTextAlign('right')">
+                                </label>
+                            </div>
+                        </div>
+
+                        <br>
+                        <hr>
+
+                        <div>
+                            <p class="sub-heading">Font Weight</p>
+                            <div class="select-radio">
+                                <label>Light<input type="radio" name="weight" value="Light"
+                                        onchange="changeFontWeight(100)"> </label>
+                                <label>Normal<input type="radio" name="weight" value="Normal"
+                                    checked
+                                        onchange="changeFontWeight(400)"> </label>
+                                <label>Medium<input type="radio" name="weight" value="Medium"
+                                        onchange="changeFontWeight(600)"> </label>
+                                <label>Bold<input type="radio" name="weight" value="Bold"
+                                        onchange="changeFontWeight(800)">
+                                </label>
+                            </div>
+                        </div>
+
+                        <br>
+                        <hr>
+
+                        <div>
+                            <p class="sub-heading">Font Style</p>
+                            <div class="select-radio">
+                                <label>Normal<input type="radio" name="style" value="normal"
+                                    checked onchange="changeFontStyle('normal')"> </label>
+                                <label>italic<input type="radio" name="style" value="italic"
+                                        onchange="changeFontStyle('italic')"> </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="sub-heading">Color</p>
+                            <div class="color-bar">
+                                <input type="color" name="colorBox" class="color-box"  id="colorBox" value="#ce558f"
+                                    oninput="changeFontColor(this.value)">
+                                <div class="color-code"><span class="color-value">#ce558f</span></div>
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <div class="rotate-element">
+                                <button><i class="fa-solid fa-arrows-spin" onclick="rotateNameElement()"></i></button>
+                                <p>Rotate Element</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Design tools End -->
+
+                    <div class="submit-area">
+                        <button onclick="printPreview()">Print</button>
+                        <button onclick="saveData()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./scripts/index.js"></script>
+</body>
+
+</html>
