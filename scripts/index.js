@@ -298,37 +298,6 @@ function printPreview() {
     printWindow.print();
 }
 
-function getItemFromStorage() {
-    const attributeObject = JSON.parse(sessionStorage.getItem('attributes'));
-    if (!attributeObject) {
-        console.log('No attributes found in sessionStorage');
-        return;
-    }
-
-    const keys = Object.keys(attributeObject);
-
-    keys.forEach(key => {
-        switch (key) {
-            case 'qrImage':
-                updateAndResetDesignTools(attributeObject.qrImage);
-                break;
-            case 'profileName':
-                updateAndResetDesignTools(attributeObject.profileName);
-                break;
-            case 'company':
-                updateAndResetDesignTools(attributeObject.company);
-                break;
-            case 'designation':
-                updateAndResetDesignTools(attributeObject.designation);
-                break;
-            default:
-                console.log('Not a valid elementId');
-                break;
-        }
-    });
-}
-
-
 function downloadJSON(data, filename) {
     var json = JSON.stringify(data, null, 2);
     var blob = new Blob([json], { type: "application/json" });
