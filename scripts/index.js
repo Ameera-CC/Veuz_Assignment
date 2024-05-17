@@ -1,14 +1,8 @@
-var attributes = {
-    txtSize: '',
-    txtLineheight: '',
-    txtcolor: '',
-    txtAlignment: '',
-    txtWeight: '',
-    txtStyle: '',
-    txtRotation: '',
-    txtCordinates: '',
-};
-
+const fontSizeSlider = document.getElementById('fontSizeSlider');
+const lineHeightSlider = document.getElementById('lineHeightSlider');
+const qrWidthSlider = document.getElementById('qrWidthSlider');
+const qrHeightSlider = document.getElementById('qrHeightSlider');
+var attributes;
 let selectedElementId = null;
 
 window.onload = function () {
@@ -82,11 +76,6 @@ function handleCustomOption() {
     customSelect.style.display = "block";
 }
 
-function updateTooltip(element) {
-    var tooltip = element.nextElementSibling;
-    tooltip.innerHTML = element.value + "mm";
-}
-
 document.addEventListener("DOMContentLoaded", function () {
     const landscapeButton = document.getElementById('landscapeBtn');
     const portraitButton = document.getElementById('portraitBtn');
@@ -110,6 +99,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
     portraitButton.click();
 
+    function openDesignTools(elementId) {
+
+        selectedElementId = elementId;
+        storeData();
+        const attributeObject = JSON.parse(sessionStorage.getItem('attributes'));
+
+        const designToolsSection = document.getElementById("designTools");
+        const qrSizeSlider = document.getElementById("qrSizeSlider");
+        const clickedItem = document.getElementById(elementId);
+        const allItems = document.querySelectorAll(".profile-input");
+
+        allItems.forEach(function (item) {
+            item.style.borderColor = 'rgba(14, 13, 13, 0.14)';
+            if (elementId !== 'qrImage') {
+                document.getElementById('qrImage').style.border = 'none';
+                qrSizeSlider.style.display = "none";
+                designToolsSection.style.display = "block";
+                clickedItem.style.borderColor = '#ce558f';
+            }
+            else {
+                qrSizeSlider.style.display = "block";
+                designToolsSection.style.display = "none";
+                clickedItem.style.border = '1px solid #ce558f';
+            }
+        });
+
+        if (attributeObject && attributeObject[elementId]) {
+            updateAndResetDesignTools(attributeObject[elementId]);
+        }
+    }
+
+    //upadte and reset the design tools on each element (profileName,company,designation) selected.
     function updateAndResetDesignTools(data) {
 
         // Reset font size slider
@@ -143,47 +164,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    function openDesignTools(elementId) {
-
-        selectedElementId = elementId;
-        storeData();
-        const attributeObject = JSON.parse(sessionStorage.getItem('attributes'));
-
-        const designToolsSection = document.getElementById("designTools");
-        const qrSizeSlider = document.getElementById("qrSizeSlider");
-        const clickedItem = document.getElementById(elementId);
-        const allItems = document.querySelectorAll(".profile-input");
-
-        allItems.forEach(function (item) {
-            item.style.borderColor = 'rgba(14, 13, 13, 0.14)';
-            if (elementId !== 'qrImage') {
-                document.getElementById('qrImage').style.border = 'none';
-                qrSizeSlider.style.display = "none";
-                designToolsSection.style.display = "block";
-                clickedItem.style.borderColor = '#ce558f';
-            }
-            else {
-                qrSizeSlider.style.display = "block";
-                designToolsSection.style.display = "none";
-                clickedItem.style.border = '1px solid #ce558f';
-            }
-        });
-
-        if (attributeObject && attributeObject[elementId]) {
-            updateAndResetDesignTools(attributeObject[elementId]);
-        }
-    }
-
     window.openDesignTools = openDesignTools;
 
 
 });
 
-const fontSizeSlider = document.getElementById('fontSizeSlider');
-const lineHeightSlider = document.getElementById('lineHeightSlider');
-const qrWidthSlider = document.getElementById('qrWidthSlider');
-const qrHeightSlider = document.getElementById('qrHeightSlider');
-
+function updateTooltip(element) {
+    var tooltip = element.nextElementSibling;
+    tooltip.innerHTML = element.value + "mm";
+}
 
 qrWidthSlider.addEventListener('input', () => {
     const selectedElement = document.getElementById('qrPhoto');
@@ -364,6 +353,7 @@ function storeData() {
     var previewElements = document.querySelectorAll('.txt-format');
     var qrImage = document.getElementById('qrPhoto');
     var qrImageStyles = window.getComputedStyle(qrImage);
+    console.log('Computed Style : ' , qrImageStyles);
     var data = {
         qrImage: {
             width: qrImageStyles.getPropertyValue('width'),
